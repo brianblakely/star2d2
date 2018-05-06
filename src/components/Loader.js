@@ -16,6 +16,13 @@ export default class Loader extends React.Component {
       return (
         <LoaderView loaded={this.state.loaded} />
       );
+    } else {
+      return (
+        <React.Fragment>
+          <LoaderView loaded={this.state.loaded} />
+          {this.state.loaded && this.props.children(this.state)}
+        </React.Fragment>
+      );
     }
   }
 
@@ -26,26 +33,26 @@ export default class Loader extends React.Component {
           loaded: true
         });
       });
+    } else if(this.props.json && !this.state.loaded) {
+      this.loadJSON();
     }
   }
 
-  componentDidUpdate() {
-
-  }
-
   loadJSON() {
-    // fetch(this.props.json === `string`)
-    //   .then(function(response) {
-    //     return response.json();
-    //   })
-    //   .then(function(apiData) {
-    //     weatherData = apiData;
-    //     render(tempUnit, apiData);
-    //   });
+    fetch(this.props.json)
+      .then((response)=> {
+        return response.json();
+      })
+      .then((data)=> {
+        this.setState(Object.assign({
+          loaded: true
+        }, data));
+      });
   }
 }
 
 Loader.propTypes = {
-  view: PropTypes.element,
-  children: PropTypes.func
+  view: PropTypes.func,
+  children: PropTypes.func,
+  json: PropTypes.string
 };
