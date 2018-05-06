@@ -1,5 +1,5 @@
 import React from 'react';
-import LoaderView from "./LoaderView";
+import PropTypes from 'prop-types';
 
 export default class Loader extends React.Component {
   constructor(props) {
@@ -10,17 +10,23 @@ export default class Loader extends React.Component {
   }
 
   render() {
-    return (
-      <LoaderView loaded={this.state.loaded} />
-    );
+    const LoaderView = this.props.view;
+
+    if(!this.props.children) {
+      return (
+        <LoaderView loaded={this.state.loaded} />
+      );
+    }
   }
 
   componentDidMount() {
-    window.addEventListener(`load`, ()=> {
-      this.setState({
-        loaded: true
+    if(!this.props.children) {
+      window.addEventListener(`load`, ()=> {
+        this.setState({
+          loaded: true
+        });
       });
-    });
+    }
   }
 
   componentDidUpdate() {
@@ -38,3 +44,8 @@ export default class Loader extends React.Component {
     //   });
   }
 }
+
+Loader.propTypes = {
+  view: PropTypes.element,
+  children: PropTypes.func
+};

@@ -6,6 +6,7 @@ import Typography from 'material-ui/Typography';
 import Loader from "./components/Loader";
 import characterData from './data.json';
 import CharacterPicker from './components/CharacterPicker.js';
+import LoaderView from "./components/LoaderView";
 
 class App extends Component {
   render() {
@@ -30,7 +31,7 @@ class App extends Component {
 
         <CharacterPicker data={characterData} />
 
-        <Loader json={characterData} />
+        <Loader view={LoaderView} />
       </React.Fragment>
     );
   }
